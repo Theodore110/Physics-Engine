@@ -1,0 +1,27 @@
+[package]
+name = "physics2d"
+version = "0.1.0"
+edition = "2021"
+description = "From-scratch deterministic 2D rigid-body physics engine (no external crates)"
+
+# NO dependencies: vector math, SIMD, collision, solver are all hand-rolled.
+[dependencies]
+macroquad = "0.4"
+
+[features]
+# Force the portable (non-intrinsic) SIMD fallback even on x86_64.
+# Used to prove the SSE2 path and the fallback are bit-identical.
+portable_simd = []
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+debug = false
+# NOTE: deliberately NO -ffast-math equivalent and NO target-cpu=native:
+#  * Rust never contracts a*b+c into FMA on its own, and never reassociates floats.
+#  * Baseline x86-64 has no FMA, so results are identical on every x86-64 CPU.
+
+[profile.test]
+opt-level = 2

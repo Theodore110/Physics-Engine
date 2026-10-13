@@ -1,0 +1,1 @@
+{"rustc":17664546606611198464,"features":"[]","declared_features":"[\"portable_simd\"]","target":14992458068198455912,"profile":1772342285271124021,"path":10763286916239946207,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"release\\.fingerprint\\physics2d-dd077be8964f999d\\dep-test-lib-physics2d","checksum":false}}],"rustflags":[],"config":9396254390672932401,"compile_kind":0}
