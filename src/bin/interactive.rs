@@ -21,6 +21,7 @@ struct App {
     drag_offset: Vec2,
     previous_mouse_world: Vec2,
     fps_smooth: f32,
+    previous_mouse: Vec2,
 }
 
 impl App {
@@ -33,6 +34,7 @@ impl App {
             zoom: 1.0,
             selected: None,
             drag_offset: Vec2::ZERO,
+            previous_mouse: Vec2::new(0.0, 0.0),
             previous_mouse_world: Vec2::ZERO,
             fps_smooth: 60.0,
         };
