@@ -91,10 +91,10 @@ impl App {
 
         // Middle mouse pans the camera.
         if is_mouse_button_down(MouseButton::Middle) {
-            let delta = mouse_delta();
-            let units_per_pixel = 1.0 / (WORLD_SCALE * self.zoom);
-            self.camera_target.x -= delta.x * units_per_pixel;
-            self.camera_target.y += delta.y * units_per_pixel;
+            let (mouse_x, mouse_y) = mouse_position();
+            let current_mouse = Vec2::new(mouse_x, mouse_y);
+            let delta = current_mouse - self.previous_mouse;
+            self.previous_mouse = current_mouse;
         }
 
         if is_mouse_button_pressed(MouseButton::Left) {
@@ -221,7 +221,12 @@ impl App {
 
         if self.show_contacts {
             for contact in self.world.contacts() {
-                draw_circle(contact.point.x, contact.point.y, 0.075, Color::new(1.0, 0.30, 0.26, 1.0));
+                draw_circle(
+                    contact.contact_point.x,
+                    contact.contact_point.y,
+                    0.075,
+                    Color::new(1.0, 0.30, 0.26, 1.0),
+                );
             }
         }
         set_default_camera();
