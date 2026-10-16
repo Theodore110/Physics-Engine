@@ -26,6 +26,8 @@ struct App {
 
 impl App {
     fn new() -> Self {
+        let (mouse_x, mouse_y) = mouse_position();
+    
         let mut app = Self {
             world: make_world(),
             paused: false,
@@ -34,10 +36,11 @@ impl App {
             zoom: 1.0,
             selected: None,
             drag_offset: Vec2::ZERO,
-            previous_mouse: Vec2::new(0.0, 0.0),
             previous_mouse_world: Vec2::ZERO,
             fps_smooth: 60.0,
+            previous_mouse: Vec2::new(mouse_x, mouse_y),
         };
+    
         app.world.fit_cell_size();
         app
     }
@@ -92,12 +95,18 @@ impl App {
         }
 
         // Middle mouse pans the camera.
+        let current_mouse = Vec2::new(mouse.0, mouse.1);
+
+        // Middle mouse pans the camera.
         if is_mouse_button_down(MouseButton::Middle) {
-            let (mouse_x, mouse_y) = mouse_position();
-            let current_mouse = Vec2::new(mouse_x, mouse_y);
-            let delta = current_mouse - self.previous_mouse;
-            self.previous_mouse = current_mouse;
+            let delta = mouse_delta_position();
+            let scale = WORLD_SCALE * self.zoom;
+
+            self.camera_target.x -= delta.x / scale;
+            self.camera_target.y += delta.y / scale;
         }
+
+        self.previous_mouse = current_mouse;
 
         if is_mouse_button_pressed(MouseButton::Left) {
             if let Some(i) = self.pick_body(world_mouse) {
